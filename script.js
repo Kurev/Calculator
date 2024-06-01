@@ -1,8 +1,13 @@
-let display = document.getElementById('display')
+let display = document.getElementById('display');
 
 function appendToDisplay(value) {
-    display.value += value;
-    
+    if (value === '*') {
+        display.value += 'x';
+    } else if (value === '/') {
+        display.value += '÷';
+    } else {
+        display.value += value;
+    }
 }
 
 function clearDisplay() {
@@ -15,9 +20,17 @@ function deleteLastCharacter() {
 }
 
 function calculateResult() {
-    display.value = eval(display.value)
-    if (display.value == 'Infinity' || NaN){
-        display.value = 'Undefined'
-    }   
+    let currentDisplayValue = display.value;
+    currentDisplayValue = currentDisplayValue.replace(/x/g, '*').replace(/÷/g, '/');
+    
+    try {
+        let result = eval(currentDisplayValue);
+        if (result === Infinity || isNaN(result)) {
+            display.value = 'Undefined';
+        } else {
+            display.value = result;
+        }
+    } catch (e) {
+        display.value = 'Error';
+    }
 }
-
